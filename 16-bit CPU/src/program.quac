@@ -1,0 +1,125 @@
+@.word 0x0100 @ mov r1  0 pc=1
+@.word 0x0200 @ mov r2  0 pc=2
+
+@ COND Program
+.word 0x0316 @ mov r3  16 pc=3
+.word 0x0401 @ mov r4  1 pc=4
+.word 0x8000 @ add rz  rz  rz; flag = 1 
+.word 0x8a04 @ add r2  r4; cond = 1  z=1 should exec
+.word 0xb944 @ xor r1  r4  r4; cond = 1  z=1 should exec 
+.word 0x9040 @ sub rz  r4  rz; flag = 0
+.word 0x5930 @ ldr r1  r3; cond = 1  flag = 0  should not execute
+.word 0x9000 @ sub rz  rz  rz; flag = 1
+.word 0x5930 @ ldr r1  r3; cond = 1  flag = 1 Should exec
+.word 0x8334 @ add r3  r3  r4; flag = 0
+.word 0x4930 @ str r1  r3; cond = 1 flag = 0  should not execute
+.word 0x5230
+.word 0x9000
+.word 0x4930
+.word 0x5230
+.word 0x9040
+.word 0x0915
+.word 0x9000
+.word 0x0951
+.word 0x0000
+.word 0x1337
+NOP
+
+
+.word 0x01cd
+.word 0x02ef
+.word 0x8312
+nop
+
+@ FIB Program
+.word 0x0101 @ movl r1  1
+.word 0x0200 @ movl r2  0
+.word 0x0319 @ movl r3  19
+.word 0x9030 @ sub rz  r3  rz
+.word 0x0e0b @ movl pc  11; cond=1
+.word 0x8412 @ add r4  r1  r2
+.word 0x8120 @ add r1  r2  rz
+.word 0x8240 @ add r2  r4  rz
+.word 0x0401 @ movl r4  1
+.word 0x9334 @ sub r3  r3  r4
+.word 0x0603 @ mov pc  3
+.word 0x0000 @ mov rz  0
+NOP
+
+@ MULT Program
+movl r1, 5
+movl r2, 6
+mult r4, r1, r2
+movl r1, 2
+movl r2, 18
+mult r3, r1, r2
+NOP
+
+.word 0x8412 @ add r4, r1, r2
+.word 0xa421 @ and r4, r2, r1
+.word 0x9423 @ sub r4, r2, r3
+.word 0x9432 @ sub r4, r3, r2
+.word 0xa413 @ and r4, r1, r3
+.word 0xa431 @ and r4, r3, r1 
+.word 0xb412 @ xor r4, r1, r2
+.word 0xb012 @ xor rz, r1, r2
+.word 0x8100 @ add r1, rz, rz
+.word 0x8230 @ add r2, r3, rz
+NOP
+
+@ JUMP Program
+.word 0x0403 
+.word 0x8160 
+.word 0x8664 
+.word 0x0203 
+.word 0x8662 
+.word 0x0303 
+.word 0x9663 
+.word 0x0409 
+.word 0x8614 
+.word 0x8660
+.word 0x0000
+@NOP
+
+@ REC Program
+.word 0x8400
+.word 0x0120 
+.word 0x5210 
+.word 0x0301 
+.word 0x8113 
+.word 0x9443 
+.word 0x031f 
+.word 0x4340 
+.word 0x9020 
+.word 0x5e40 
+.word 0x0301 
+.word 0x9443 
+.word 0x4140 
+.word 0x5110 
+.word 0x9443 
+.word 0x4140 
+.word 0x9223 
+.word 0x8143 
+.word 0x5110 
+.word 0x8113 
+.word 0x9443 
+.word 0x0318 
+.word 0x4340 
+.word 0x0608 
+.word 0x0301 
+.word 0x8443 
+.word 0x5140 
+.word 0x8221 
+.word 0x0302 
+.word 0x8443 
+.word 0x5640 
+.word 0x0000 
+.word 0x0008 
+.word 0x000f 
+.word 0x0004 
+.word 0x0005 
+.word 0x0006 
+.word 0x0007 
+.word 0x0008 
+.word 0x0009 
+.word 0x000a
