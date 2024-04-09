@@ -1,0 +1,59 @@
+@ Shadow register test
+movl r1, 1
+movl r2, 2
+movl r3, 3
+movl r4, 4
+shadowreg
+movl r1, 4
+movl r2, 3
+movl r3, 2
+movl r4, 1
+shadowreg
+add r4, r1, r2 @ 1 + 2 = 3 
+shadowreg
+add r4, r1, r2 @ 4 + 3 = 7 in shadow reg 4
+shadowreg
+movl r1, 5
+movl r2, 3
+div r3, r1, r2 @ r3=1; remainder should be 2
+movl r1, 6
+div r3, r1, r2 @ r3=2; remainder should be 0
+shadowreg
+movl r1, 55
+movl r2, 5
+div r3, r1, r2 @ r3=11; remainder should be 0
+movl r2, 4
+div r4, r1, r2 @ r4=13; remainder should be 3
+shadowreg
+movl r1, 128
+movl r3, 16
+div r2, r1, r3 @ r2=8; remainder should be 0
+
+@ STR PROGRAM
+movl r1, 2
+movl r2, 5
+add r3, r1, r2
+movl r7, 1
+str r2, [r1, r7] @ str 5 at addr 3
+movl r1, 4
+movl r7, 2
+movl r3, 36
+str r3, [r1, r7] @ store 36 at addr 6
+@ post offset
+movl r1, 2
+movl r7, 1
+movl r3, 12
+strr r3, [r2], r7 @ store 12 at addr 5 then add 1 so r2 = 6
+
+@ LDR PROGRAM
+movl r1, 2
+movl r7, 3
+ldr r4, [r1, r7] @ ldr into r4 12 (data at addr 5)
+@ post offset
+movl r1, 4
+movl r7, 2
+ldrr r3, [r1], r7 @ ldr into r3 (data at addr 4) then add offset so r1 = 6
+ldr r2, [r4, r7] @ ldr into r2 (data at addr 12 + 2 = 14)
+movl r7, 3
+ldrr r4, [r2], r7 @ ldr into r4 (data at addr 0x105 (nothing there) should be 0); r2=0x105+3
+NOP
